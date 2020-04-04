@@ -19,5 +19,15 @@ namespace Snake
             }
         }
 
+        public override void Drow()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            foreach (Point p in pList)
+            {
+                p.Draw();
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+
     }
 }

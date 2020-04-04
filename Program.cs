@@ -16,14 +16,8 @@ namespace Snake
             Console.SetWindowSize(80, 25);
 
             //отрисовка рамки
-            HorisontalLine upLine = new HorisontalLine(0, 78, 0, '+');
-            HorisontalLine downLine = new HorisontalLine(0, 78, 24, '+');
-            VerticalLine leftLine = new VerticalLine(0, 24, 0, '+');
-            VerticalLine rightLine = new VerticalLine(0, 24, 78, '+');
-            upLine.Drow();
-            downLine.Drow();
-            leftLine.Drow();
-            rightLine.Drow();
+            Walls walls = new Walls(80, 25);
+            walls.Draw();
 
             //отрисовка точек
             Point p = new Point(4, 5, '*');
@@ -38,6 +32,10 @@ namespace Snake
 
             while (true)
             {
+                if (walls.IsHit(snake) || snake.IsHitTail())
+                {
+                    break;
+                }
                 if (snake.Eat(food))
                 {
                     food = foodCreator.CreateFood();
@@ -55,13 +53,28 @@ namespace Snake
                     snake.HandleKey(key.Key);
                 }
                 Thread.Sleep(100);
-                snake.Move();
             }
-
+            WriteGameOver();
+            Console.ReadLine();
 
             Console.ReadKey();
         }
 
-        
+        static void WriteGameOver()
+        {
+            int xOffset = 33;
+            int yOffset = 8;
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.SetCursorPosition(xOffset, yOffset++);
+            WriteText("==============", xOffset, yOffset++);
+            WriteText("GAME    OVER", xOffset + 1, yOffset++);
+            WriteText("==============", xOffset, yOffset++);
+        }
+
+        static void WriteText(String text, int xOffset, int yOffset)
+        {
+            Console.SetCursorPosition(xOffset, yOffset);
+            Console.WriteLine(text);
+        }
     }
 }
